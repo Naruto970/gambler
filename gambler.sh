@@ -1,36 +1,23 @@
-#!/bin/bash -x
+#!/bin/bash -x 
 
+echo "welcome to the Gambling Simulator: "
 
-read -p "no. of days you want to play: " days
-read -p "no. of games that you want to play: " games
+STAKE=100
+PERCENTAGEVALUE=50
+percentage=$((($STAKE * $PERCENTAGEVALUE) / 100))
+winLimitPercentage=$(($STAKE + $percentage))
+lossLimitPercentage=$(($STAKE - $percentage))
+valid=true
+aim=$STAKE
 
-bets=0
-stake=0
-wins=0
-loss=0
+while [ $aim -gt $lossLimitPercentage ] && [ $aim -lt $winLimitPercentage ]
+do
+value=$((RANDOM%2))
+if [ $value -eq 1 ]
+then
+     aim=$(( $aim + 1 ))
+else
+     aim=$(( $aim - 1 ))
+fi
+done
 
-for (( i=0 ; i<$days ; i++ ))
-{
-      stake=$(( $stake +100 ))
-   for (( j=0 ; j<$games ; j++ ))
-	{    
-              value=$((RANDOM%2))
-             ((bets++))
-   	if [ $stake -eq 0]
-        then
-                  break
-        elif [ $value -eq 0  ] 
-        then      
-                 ((wins++))             
-                 ((stake++))
-        else
-                 ((loss++)) 
-                 ((stake--))
-        fi
-    }
-}
-
-echo "the bets you made are: " $bets
-echo "the total no. of stake is: " $stake 
-echo "the no. of wins are: " $wins
-echo "the no. of losses are: " $loss
